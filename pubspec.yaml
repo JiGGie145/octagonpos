@@ -45,6 +45,9 @@ dependencies:
   uuid: ^4.5.1
   intl: ^0.20.2
 
+  # Image
+  image_picker: ^1.1.2
+
   # Printing
   pdf: ^3.11.3
   printing: ^5.14.2

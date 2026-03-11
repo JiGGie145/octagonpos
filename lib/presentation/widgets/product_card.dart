@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_pos/core/theme/app_colors.dart';
 import 'package:flutter_pos/core/theme/app_spacing.dart';
 import 'package:flutter_pos/core/utils/currency_formatter.dart';
+import 'package:flutter_pos/core/utils/image_helper.dart';
 import 'package:flutter_pos/domain/entities/product.dart';
 
 /// A product card for the POS grid.
@@ -100,11 +103,17 @@ class ProductCard extends StatelessWidget {
     if (product.imageUrl != null && product.imageUrl!.isNotEmpty) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-        child: Image.network(
-          product.imageUrl!,
-          fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => _buildIconFallback(),
-        ),
+        child: isLocalImagePath(product.imageUrl!)
+            ? Image.file(
+                File(product.imageUrl!),
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => _buildIconFallback(),
+              )
+            : Image.network(
+                product.imageUrl!,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => _buildIconFallback(),
+              ),
       );
     }
     return _buildIconFallback();

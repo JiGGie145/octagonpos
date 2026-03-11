@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_pos/core/theme/app_colors.dart';
 import 'package:flutter_pos/core/theme/app_spacing.dart';
 import 'package:flutter_pos/core/utils/currency_formatter.dart';
+import 'package:flutter_pos/core/utils/image_helper.dart';
 import 'package:flutter_pos/domain/entities/product.dart';
 import 'package:flutter_pos/presentation/providers/product_providers.dart';
 import 'package:flutter_pos/presentation/providers/settings_provider.dart';
@@ -248,17 +251,29 @@ class _ProductListTile extends ConsumerWidget {
       ),
       clipBehavior: Clip.antiAlias,
       child: hasImage
-          ? Image.network(
-              product.imageUrl!,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Center(
-                child: Icon(
-                  _categoryIcon(product.category),
-                  color: AppColors.textSecondary,
-                  size: AppSpacing.iconMd + 2,
-                ),
-              ),
-            )
+          ? (isLocalImagePath(product.imageUrl!)
+              ? Image.file(
+                  File(product.imageUrl!),
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Center(
+                    child: Icon(
+                      _categoryIcon(product.category),
+                      color: AppColors.textSecondary,
+                      size: AppSpacing.iconMd + 2,
+                    ),
+                  ),
+                )
+              : Image.network(
+                  product.imageUrl!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Center(
+                    child: Icon(
+                      _categoryIcon(product.category),
+                      color: AppColors.textSecondary,
+                      size: AppSpacing.iconMd + 2,
+                    ),
+                  ),
+                ))
           : Center(
               child: Icon(
                 _categoryIcon(product.category),

@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pos/core/theme/app_colors.dart';
 import 'package:flutter_pos/core/theme/app_spacing.dart';
+import 'package:flutter_pos/core/utils/image_helper.dart';
 import 'package:flutter_pos/domain/entities/product.dart';
+import 'package:image_picker/image_picker.dart';
 
 /// Add/Edit product dialog.
 ///
@@ -37,7 +41,7 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
   late final TextEditingController _nameController;
   late final TextEditingController _priceController;
   late final TextEditingController _categoryController;
-  late final TextEditingController _imageUrlController;
+  String? _imagePath;
   late bool _isActive;
   bool _isSaving = false;
 
@@ -66,8 +70,7 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
     );
     _categoryController =
         TextEditingController(text: widget.product?.category ?? '');
-    _imageUrlController =
-        TextEditingController(text: widget.product?.imageUrl ?? '');
+    _imagePath = widget.product?.imageUrl;
     _isActive = widget.product?.isActive ?? true;
   }
 
@@ -76,8 +79,21 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
     _nameController.dispose();
     _priceController.dispose();
     _categoryController.dispose();
-    _imageUrlController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 800,
+      maxHeight: 800,
+      imageQuality: 85,
+    );
+    if (picked != null) {
+      final savedPath = await saveProductImage(File(picked.path));
+      setState(() => _imagePath = savedPath);
+    }
   }
 
   @override
@@ -173,25 +189,8 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
               ),
               const SizedBox(height: AppSpacing.md),
 
-              // Image URL (optional)
-              TextFormField(
-                controller: _imageUrlController,
-                decoration: const InputDecoration(
-                  labelText: 'Image URL (optional)',
-                  hintText: 'https://example.com/image.jpg',
-                  prefixIcon: Icon(Icons.image_outlined),
-                ),
-                keyboardType: TextInputType.url,
-                validator: (value) {
-                  if (value != null && value.trim().isNotEmpty) {
-                    final uri = Uri.tryParse(value.trim());
-                    if (uri == null || !uri.hasAbsolutePath) {
-                      return 'Enter a valid URL';
-                    }
-                  }
-                  return null;
-                },
-              ),
+              // Product image (optional)
+              _buildImagePicker(context),
               const SizedBox(height: AppSpacing.md),
 
               // Active toggle
@@ -236,6 +235,85 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
     );
   }
 
+  Widget _buildImagePicker(BuildContext context) {
+    final theme = Theme.of(context);
+    final hasImage = _imagePath != null && _imagePath!.isNotEmpty;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Product Image (optional)',
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        GestureDetector(
+          onTap: _isSaving ? null : _pickImage,
+          child: Container(
+            height: 140,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+              border: Border.all(color: theme.colorScheme.outline),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: hasImage ? _buildImagePreview(theme) : _buildPlaceholder(theme),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildImagePreview(ThemeData theme) {
+    final isLocal = isLocalImagePath(_imagePath!);
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        if (isLocal)
+          Image.file(File(_imagePath!), fit: BoxFit.cover)
+        else
+          Image.network(_imagePath!, fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => _buildPlaceholder(theme)),
+        Positioned(
+          top: AppSpacing.xs,
+          right: AppSpacing.xs,
+          child: IconButton.filled(
+            onPressed: _isSaving
+                ? null
+                : () => setState(() => _imagePath = null),
+            icon: const Icon(Icons.close, size: 18),
+            style: IconButton.styleFrom(
+              backgroundColor: theme.colorScheme.surface.withValues(alpha: 0.8),
+              foregroundColor: theme.colorScheme.onSurface,
+              padding: const EdgeInsets.all(4),
+              minimumSize: const Size(28, 28),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPlaceholder(ThemeData theme) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.add_photo_alternate_outlined,
+            size: 36, color: theme.colorScheme.onSurfaceVariant),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          'Tap to add image',
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+
   Future<void> _handleSave() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -246,14 +324,13 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
       final priceInCents =
           (double.parse(_priceController.text.trim()) * 100).round();
       final category = _categoryController.text.trim();
-      final imageUrl = _imageUrlController.text.trim();
 
       await widget.onSave(
         name,
         priceInCents,
         category,
         _isActive,
-        imageUrl.isEmpty ? null : imageUrl,
+        _imagePath,
       );
 
       if (mounted) {

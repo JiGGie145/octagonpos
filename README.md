@@ -6,7 +6,7 @@ It is a windows application but can also be forked for web, mac Os or linux.
 The UI is as below:
 
 
-![Octagon POS](Screenshot 2026-03-11 at 16.36.28.png)
+![Octagon POS](OctagonPOS_IMG.png)
 
 
 To run the app, type  

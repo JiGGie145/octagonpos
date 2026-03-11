@@ -51,8 +51,10 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Material(
-      color: AppColors.surface,
+      color: theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -71,9 +73,8 @@ class ProductCard extends StatelessWidget {
               // Product name
               Text(
                 product.name,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
-                      color: AppColors.textPrimary,
                     ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
@@ -83,9 +84,9 @@ class ProductCard extends StatelessWidget {
               // Price
               Text(
                 formatCurrency(product.price, currencySymbol),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
+                      color: theme.colorScheme.primary,
                     ),
               ),
             ],

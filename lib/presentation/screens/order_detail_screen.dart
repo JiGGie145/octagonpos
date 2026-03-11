@@ -33,7 +33,7 @@ class OrderDetailScreen extends ConsumerWidget {
     final paymentAsync = ref.watch(paymentByOrderProvider(orderId));
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: orderAsync.whenOrNull(
               data: (order) =>
@@ -64,7 +64,7 @@ class OrderDetailScreen extends ConsumerWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Print failed: $e'),
-                              backgroundColor: AppColors.error,
+                              backgroundColor: Theme.of(context).colorScheme.error,
                             ),
                           );
                         }
@@ -164,7 +164,7 @@ class _OrderInfoCard extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: theme.colorScheme.outline),
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -185,14 +185,14 @@ class _OrderInfoCard extends StatelessWidget {
                     const SizedBox(height: AppSpacing.xs),
                     Row(
                       children: [
-                        const Icon(Icons.note_rounded,
-                            size: AppSpacing.iconSm, color: AppColors.textSecondary),
+                        Icon(Icons.note_rounded,
+                            size: AppSpacing.iconSm, color: theme.colorScheme.onSurfaceVariant),
                         const SizedBox(width: AppSpacing.xs),
                         Expanded(
                           child: Text(
                             order.note!,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: AppColors.textSecondary,
+                              color: theme.colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ),
@@ -234,7 +234,7 @@ class _LineItemsCard extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: theme.colorScheme.outline),
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -260,7 +260,7 @@ class _LineItemsCard extends StatelessWidget {
                         width: AppSpacing.quantityBadgeSize,
                         height: AppSpacing.quantityBadgeSize,
                         decoration: BoxDecoration(
-                          color: AppColors.surfaceVariant,
+                          color: theme.colorScheme.surfaceContainerHighest,
                           borderRadius:
                               BorderRadius.circular(AppSpacing.radiusSm),
                         ),
@@ -285,7 +285,7 @@ class _LineItemsCard extends StatelessWidget {
                             Text(
                               '${formatCurrency(item.unitPrice, currencySymbol)} each',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: AppColors.textSecondary,
+                                color: theme.colorScheme.onSurfaceVariant,
                               ),
                             ),
                           ],
@@ -348,7 +348,7 @@ class _TotalRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final style = isBold
         ? theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)
-        : theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary);
+        : theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -382,7 +382,7 @@ class _PaymentInfoCard extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: theme.colorScheme.outline),
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -443,7 +443,7 @@ class _TimestampsCard extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: theme.colorScheme.outline),
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -496,12 +496,12 @@ class _DetailRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: AppSpacing.iconMd - 2, color: AppColors.textSecondary),
+        Icon(icon, size: AppSpacing.iconMd - 2, color: theme.colorScheme.onSurfaceVariant),
         const SizedBox(width: AppSpacing.sm),
         Text(
           '$label: ',
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: AppColors.textSecondary,
+            color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
         Expanded(
@@ -720,7 +720,7 @@ class _StatusActionButton extends StatelessWidget {
       label: Text(label),
       style: FilledButton.styleFrom(
         backgroundColor: color,
-        foregroundColor: AppColors.onPrimary,
+      foregroundColor: Colors.white,
         minimumSize: const Size(0, AppSpacing.minTapTarget),
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.md,

@@ -14,13 +14,14 @@ class ProductListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final productsAsync = ref.watch(productListProvider);
     final searchQuery = ref.watch(productSearchQueryProvider);
     final settingsAsync = ref.watch(settingsProvider);
     final currencySymbol = settingsAsync.whenOrNull(data: (s) => s?.currencySymbol) ?? 'R';
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: const Text('Products'),
         actions: [
@@ -42,10 +43,10 @@ class ProductListScreen extends ConsumerWidget {
               },
               decoration: InputDecoration(
                 hintText: 'Search products...',
-                hintStyle: const TextStyle(color: AppColors.textSecondary),
-                prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
+                hintStyle: TextStyle(color: theme.colorScheme.onSurfaceVariant),
+                prefixIcon: Icon(Icons.search, color: theme.colorScheme.onSurfaceVariant),
                 filled: true,
-                fillColor: AppColors.surfaceVariant,
+                fillColor: theme.colorScheme.surfaceContainerHighest,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                   borderSide: BorderSide.none,
@@ -65,7 +66,7 @@ class ProductListScreen extends ConsumerWidget {
                 child: Text(
                   'Failed to load products.\n$e',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: AppColors.error),
+                  style: TextStyle(color: theme.colorScheme.error),
                 ),
               ),
               data: (products) {
@@ -84,9 +85,9 @@ class ProductListScreen extends ConsumerWidget {
                 return ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                   itemCount: filtered.length,
-                  separatorBuilder: (_, __) => const Divider(
+                  separatorBuilder: (_, __) => Divider(
                     height: 1,
-                    color: AppColors.divider,
+                    color: theme.dividerColor,
                   ),
                   itemBuilder: (context, index) {
                     return _ProductListTile(
@@ -102,8 +103,8 @@ class ProductListScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddDialog(context, ref),
-        backgroundColor: AppColors.primary,
-        child: const Icon(Icons.add, color: AppColors.onPrimary),
+        backgroundColor: theme.colorScheme.primary,
+        child: Icon(Icons.add, color: theme.colorScheme.onPrimary),
       ),
     );
   }
@@ -122,7 +123,7 @@ class ProductListScreen extends ConsumerWidget {
           Text(
             isSearching ? 'No products match your search' : 'No products yet',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
           ),
           if (!isSearching) ...[
@@ -181,18 +182,18 @@ class _ProductListTile extends ConsumerWidget {
         horizontal: AppSpacing.sm,
         vertical: AppSpacing.xs,
       ),
-      leading: _buildLeadingIcon(),
+      leading: _buildLeadingIcon(context),
       title: Text(
         product.name,
         style: theme.textTheme.bodyLarge?.copyWith(
           fontWeight: FontWeight.w500,
-          color: product.isActive ? AppColors.textPrimary : AppColors.textDisabled,
+        color: product.isActive ? theme.colorScheme.onSurface : AppColors.textDisabled,
         ),
       ),
       subtitle: Text(
         '${product.category} · ${formatCurrency(product.price, currencySymbol)}',
         style: theme.textTheme.bodySmall?.copyWith(
-          color: AppColors.textSecondary,
+          color: theme.colorScheme.onSurfaceVariant,
         ),
       ),
       trailing: Row(
@@ -220,14 +221,14 @@ class _ProductListTile extends ConsumerWidget {
           IconButton(
             onPressed: () => _showEditDialog(context, ref),
             icon: const Icon(Icons.edit_outlined, size: AppSpacing.iconMd),
-            color: AppColors.textSecondary,
+            color: theme.colorScheme.onSurfaceVariant,
             tooltip: 'Edit',
           ),
           // Delete button
           IconButton(
             onPressed: () => _showDeleteConfirmation(context, ref),
             icon: const Icon(Icons.delete_outline, size: AppSpacing.iconMd),
-            color: AppColors.error,
+            color: theme.colorScheme.error,
             tooltip: 'Delete',
           ),
         ],
@@ -235,14 +236,14 @@ class _ProductListTile extends ConsumerWidget {
     );
   }
 
-  Widget _buildLeadingIcon() {
+  Widget _buildLeadingIcon(BuildContext context) {
     final hasImage = product.imageUrl != null && product.imageUrl!.isNotEmpty;
 
     return Container(
       width: AppSpacing.productLeadingSize,
       height: AppSpacing.productLeadingSize,
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
       ),
       clipBehavior: Clip.antiAlias,
@@ -325,12 +326,12 @@ class _ProductListTile extends ConsumerWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('"${product.name}" deleted'),
-                    backgroundColor: AppColors.error,
+                    backgroundColor: Theme.of(context).colorScheme.error,
                   ),
                 );
               }
             },
-            style: FilledButton.styleFrom(backgroundColor: AppColors.error),
+            style: FilledButton.styleFrom(backgroundColor: Theme.of(ctx).colorScheme.error),
             child: const Text('DELETE'),
           ),
         ],

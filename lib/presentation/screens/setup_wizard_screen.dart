@@ -83,7 +83,7 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -93,7 +93,7 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen> {
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-                side: const BorderSide(color: AppColors.border),
+                side: BorderSide(color: theme.colorScheme.outline),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(AppSpacing.xl),
@@ -121,7 +121,7 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen> {
                       Text(
                         'Set up your business details to get started.',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -241,12 +241,12 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen> {
                       FilledButton.icon(
                         onPressed: _saving ? null : _save,
                         icon: _saving
-                            ? const SizedBox(
+                            ? SizedBox(
                                 width: 18,
                                 height: 18,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  color: AppColors.onPrimary,
+                                  color: theme.colorScheme.onPrimary,
                                 ),
                               )
                             : const Icon(Icons.check_rounded),

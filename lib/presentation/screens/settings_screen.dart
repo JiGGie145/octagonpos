@@ -77,7 +77,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to save settings: $e'),
-            backgroundColor: AppColors.error,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -90,9 +90,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final settingsAsync = ref.watch(settingsProvider);
+    final themeMode = ref.watch(themeModeProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(title: const Text('Settings')),
       body: settingsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -112,6 +113,63 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      // ── Section: Appearance ───────────────────────
+                      _SectionHeader(
+                        icon: Icons.palette_rounded,
+                        title: 'Appearance',
+                        theme: theme,
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(AppSpacing.radiusMd),
+                          side: BorderSide(color: theme.dividerColor),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(AppSpacing.md),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Theme',
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              SegmentedButton<ThemeMode>(
+                                segments: const [
+                                  ButtonSegment(
+                                    value: ThemeMode.system,
+                                    icon: Icon(Icons.settings_brightness_rounded),
+                                    label: Text('System'),
+                                  ),
+                                  ButtonSegment(
+                                    value: ThemeMode.light,
+                                    icon: Icon(Icons.light_mode_rounded),
+                                    label: Text('Light'),
+                                  ),
+                                  ButtonSegment(
+                                    value: ThemeMode.dark,
+                                    icon: Icon(Icons.dark_mode_rounded),
+                                    label: Text('Dark'),
+                                  ),
+                                ],
+                                selected: {themeMode},
+                                onSelectionChanged: (selected) {
+                                  ref
+                                      .read(themeModeProvider.notifier)
+                                      .state = selected.first;
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+
                       // ── Section: General ──────────────────────────
                       _SectionHeader(
                         icon: Icons.business_rounded,
@@ -124,7 +182,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.circular(AppSpacing.radiusMd),
-                          side: const BorderSide(color: AppColors.border),
+                          side: BorderSide(color: theme.dividerColor),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(AppSpacing.md),
@@ -160,7 +218,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.circular(AppSpacing.radiusMd),
-                          side: const BorderSide(color: AppColors.border),
+                          side: BorderSide(color: theme.dividerColor),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(AppSpacing.md),
@@ -234,7 +292,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.circular(AppSpacing.radiusMd),
-                          side: const BorderSide(color: AppColors.border),
+                          side: BorderSide(color: theme.dividerColor),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(AppSpacing.md),
@@ -281,7 +339,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.circular(AppSpacing.radiusMd),
-                          side: const BorderSide(color: AppColors.border),
+                          side: BorderSide(color: theme.dividerColor),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(AppSpacing.md),
@@ -305,12 +363,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       FilledButton.icon(
                         onPressed: _saving ? null : _save,
                         icon: _saving
-                            ? const SizedBox(
+                            ? SizedBox(
                                 width: 18,
                                 height: 18,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  color: AppColors.onPrimary,
+                                  color: theme.colorScheme.onPrimary,
                                 ),
                               )
                             : const Icon(Icons.save_rounded),

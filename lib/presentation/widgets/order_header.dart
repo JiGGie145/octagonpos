@@ -19,6 +19,8 @@ class OrderHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
@@ -29,9 +31,8 @@ class OrderHeader extends StatelessWidget {
           // Title
           Text(
             'Current Order',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
                 ),
           ),
           const Spacer(),
@@ -47,7 +48,7 @@ class OrderHeader extends StatelessWidget {
             ),
             child: Text(
               'In Progress',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              style: theme.textTheme.labelSmall?.copyWith(
                     color: AppColors.warning,
                     fontWeight: FontWeight.w600,
                   ),

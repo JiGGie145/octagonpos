@@ -19,6 +19,7 @@ class OrderPanel extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final cart = ref.watch(cartProvider);
     final settingsAsync = ref.watch(settingsProvider);
 
@@ -34,12 +35,12 @@ class OrderPanel extends ConsumerWidget {
     );
 
     return Container(
-      color: AppColors.surface,
+      color: theme.colorScheme.surface,
       child: Column(
         children: [
           // Header
           const OrderHeader(),
-          const Divider(height: 1, color: AppColors.divider),
+          Divider(height: 1, color: theme.dividerColor),
 
           // Line items or empty state
           Expanded(
@@ -96,7 +97,7 @@ class OrderPanel extends ConsumerWidget {
           Text(
             'Add items to get started',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
           ),
         ],
@@ -112,8 +113,8 @@ class OrderPanel extends ConsumerWidget {
     return ListView.separated(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
       itemCount: cart.items.length,
-      separatorBuilder: (_, __) =>
-          const Divider(height: 1, indent: AppSpacing.md, endIndent: AppSpacing.md, color: AppColors.divider),
+      separatorBuilder: (context, __) =>
+          Divider(height: 1, indent: AppSpacing.md, endIndent: AppSpacing.md, color: Theme.of(context).dividerColor),
       itemBuilder: (context, index) {
         final item = cart.items[index];
         return OrderLineItem(

@@ -24,6 +24,8 @@ class OrderActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
       child: Row(
@@ -35,7 +37,7 @@ class OrderActions extends StatelessWidget {
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(AppSpacing.minTapTarget),
                 side: BorderSide(
-                  color: isEmpty ? AppColors.disabled : AppColors.border,
+                  color: isEmpty ? AppColors.disabled : theme.colorScheme.outline,
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
@@ -44,7 +46,7 @@ class OrderActions extends StatelessWidget {
               child: Text(
                 'CLEAR',
                 style: TextStyle(
-                  color: isEmpty ? AppColors.disabled : AppColors.textSecondary,
+                  color: isEmpty ? AppColors.disabled : theme.colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -58,16 +60,16 @@ class OrderActions extends StatelessWidget {
               onPressed: isEmpty ? null : onPay,
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(AppSpacing.minTapTarget),
-                backgroundColor: AppColors.primary,
-                disabledBackgroundColor: AppColors.disabledBackground,
+                backgroundColor: theme.colorScheme.primary,
+                disabledBackgroundColor: theme.colorScheme.surfaceContainerHighest,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                 ),
               ),
               child: Text(
                 'PAY',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: isEmpty ? AppColors.disabled : AppColors.onPrimary,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: isEmpty ? AppColors.disabled : theme.colorScheme.onPrimary,
                   fontWeight: FontWeight.w700,
                 ),
               ),

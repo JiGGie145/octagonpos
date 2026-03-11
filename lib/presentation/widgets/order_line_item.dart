@@ -1,7 +1,5 @@
-import 'package:flutter/widget_previews.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pos/core/theme/app_colors.dart';
 import 'package:flutter_pos/core/theme/app_spacing.dart';
 import 'package:flutter_pos/core/utils/currency_formatter.dart';
 import 'package:flutter_pos/domain/entities/order_item.dart';
@@ -50,7 +48,6 @@ class OrderLineItem extends StatelessWidget {
                   item.productName,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w500,
-                    color: AppColors.textPrimary,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -59,7 +56,7 @@ class OrderLineItem extends StatelessWidget {
                 Text(
                   '${formatCurrency(item.unitPrice, currencySymbol)} each',
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -80,7 +77,6 @@ class OrderLineItem extends StatelessWidget {
               formatCurrency(item.lineTotal, currencySymbol),
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
               ),
               textAlign: TextAlign.right,
             ),
@@ -91,7 +87,7 @@ class OrderLineItem extends StatelessWidget {
             child: IconButton(
               onPressed: onRemove,
               icon: const Icon(Icons.delete_outline, size: AppSpacing.iconMd),
-              color: AppColors.error,
+              color: theme.colorScheme.error,
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(
                 minWidth: 36,
@@ -120,9 +116,11 @@ class _QuantityStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: theme.colorScheme.outline),
         borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
       ),
       child: Row(
@@ -138,9 +136,8 @@ class _QuantityStepper extends StatelessWidget {
             child: Text(
               '$quantity',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
                   ),
             ),
           ),
@@ -165,12 +162,14 @@ class _StepperButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.sm),
-        child: Icon(icon, size: AppSpacing.iconSm, color: AppColors.textPrimary),
+        child: Icon(icon, size: AppSpacing.iconSm, color: theme.colorScheme.onSurface),
       ),
     );
   }

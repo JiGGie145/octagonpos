@@ -32,7 +32,7 @@ class ProductGrid extends ConsumerWidget {
         child: Text(
           'Failed to load products.\n$e',
           textAlign: TextAlign.center,
-          style: const TextStyle(color: AppColors.error),
+          style: TextStyle(color: Theme.of(context).colorScheme.error),
         ),
       ),
       data: (products) {
@@ -58,7 +58,7 @@ class ProductGrid extends ConsumerWidget {
           Text(
             'No products yet',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
           ),
           const SizedBox(height: AppSpacing.xs),
@@ -114,7 +114,7 @@ class ProductGrid extends ConsumerWidget {
                     category,
                     style:
                         Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: AppColors.textSecondary,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                               fontWeight: FontWeight.w600,
                             ),
                   ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pos/core/theme/app_colors.dart';
 import 'package:flutter_pos/core/theme/app_spacing.dart';
 import 'package:flutter_pos/core/utils/currency_formatter.dart';
 
@@ -30,14 +29,14 @@ class OrderTotals extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
       child: Column(
         children: [
-          const Divider(height: 1, color: AppColors.divider),
+          Divider(height: 1, color: theme.dividerColor),
           const SizedBox(height: AppSpacing.sm),
           // Subtotal row
           _TotalRow(
             label: 'Subtotal',
             value: formatCurrency(subtotalCents, currencySymbol),
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: AppSpacing.xs),
@@ -46,11 +45,11 @@ class OrderTotals extends StatelessWidget {
             label: 'Tax ($taxPercent%)',
             value: formatCurrency(taxCents, currencySymbol),
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
-          const Divider(height: 1, color: AppColors.divider),
+          Divider(height: 1, color: theme.dividerColor),
           const SizedBox(height: AppSpacing.sm),
           // Total row
           _TotalRow(
@@ -58,7 +57,6 @@ class OrderTotals extends StatelessWidget {
             value: formatCurrency(totalCents, currencySymbol),
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w700,
-              color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: AppSpacing.sm),

@@ -25,7 +25,7 @@ class OrderHistoryScreen extends ConsumerWidget {
         settingsAsync.whenOrNull(data: (s) => s?.taxPercentage) ?? 15;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(title: const Text('Order History')),
       body: Column(
         children: [
@@ -91,7 +91,7 @@ class OrderHistoryScreen extends ConsumerWidget {
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
-                              ?.copyWith(color: AppColors.textSecondary),
+                              ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                         ),
                         const SizedBox(height: AppSpacing.xs),
                         Text(
@@ -171,16 +171,16 @@ class _FilterChip extends StatelessWidget {
           vertical: AppSpacing.sm,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? activeColor : AppColors.surface,
+          color: isSelected ? activeColor : theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
           border: Border.all(
-            color: isSelected ? activeColor : AppColors.border,
+            color: isSelected ? activeColor : theme.colorScheme.outline,
           ),
         ),
         child: Text(
           label,
           style: theme.textTheme.labelLarge?.copyWith(
-            color: isSelected ? AppColors.onPrimary : AppColors.textSecondary,
+            color: isSelected ? Colors.white : theme.colorScheme.onSurfaceVariant,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           ),
         ),
@@ -218,7 +218,7 @@ class _OrderCard extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: theme.colorScheme.outline),
       ),
       child: InkWell(
         onTap: onTap,
@@ -266,7 +266,7 @@ class _OrderCard extends StatelessWidget {
                     Text(
                       '${order.items.length} item${order.items.length == 1 ? '' : 's'} · ${dateFormat.format(order.createdAt)}',
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                     if (order.note != null && order.note!.isNotEmpty) ...[
@@ -274,7 +274,7 @@ class _OrderCard extends StatelessWidget {
                       Text(
                         order.note!,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: theme.colorScheme.onSurfaceVariant,
                           fontStyle: FontStyle.italic,
                         ),
                         maxLines: 1,
@@ -298,15 +298,15 @@ class _OrderCard extends StatelessWidget {
                   Text(
                     'incl. tax',
                     style: theme.textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
               ),
               const SizedBox(width: AppSpacing.xs),
-              const Icon(
+              Icon(
                 Icons.chevron_right_rounded,
-                color: AppColors.textSecondary,
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ],
           ),

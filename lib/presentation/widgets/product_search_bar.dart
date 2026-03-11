@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_pos/core/theme/app_colors.dart';
 import 'package:flutter_pos/core/theme/app_spacing.dart';
 import 'package:flutter_pos/presentation/providers/product_providers.dart';
 
@@ -26,6 +25,8 @@ class _ProductSearchBarState extends ConsumerState<ProductSearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return TextField(
       controller: _controller,
       onChanged: (value) {
@@ -33,11 +34,11 @@ class _ProductSearchBarState extends ConsumerState<ProductSearchBar> {
       },
       decoration: InputDecoration(
         hintText: 'Search products...',
-        hintStyle: const TextStyle(color: AppColors.textSecondary),
-        prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
+        hintStyle: TextStyle(color: theme.colorScheme.onSurfaceVariant),
+        prefixIcon: Icon(Icons.search, color: theme.colorScheme.onSurfaceVariant),
         suffixIcon: _controller.text.isNotEmpty
             ? IconButton(
-                icon: const Icon(Icons.clear, color: AppColors.textSecondary),
+                icon: Icon(Icons.clear, color: theme.colorScheme.onSurfaceVariant),
                 onPressed: () {
                   _controller.clear();
                   ref.read(productSearchQueryProvider.notifier).state = '';
@@ -45,7 +46,7 @@ class _ProductSearchBarState extends ConsumerState<ProductSearchBar> {
               )
             : null,
         filled: true,
-        fillColor: AppColors.surfaceVariant,
+        fillColor: theme.colorScheme.surfaceContainerHighest,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           borderSide: BorderSide.none,
@@ -56,7 +57,7 @@ class _ProductSearchBarState extends ConsumerState<ProductSearchBar> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.md,

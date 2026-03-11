@@ -53,8 +53,8 @@ class _PaymentDialogContentState extends ConsumerState<_PaymentDialogContent> {
     final total = cart.totalCents(taxPercent);
 
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(AppSpacing.radiusXl),
         ),
@@ -75,7 +75,7 @@ class _PaymentDialogContentState extends ConsumerState<_PaymentDialogContent> {
                   width: AppSpacing.dragHandleWidth,
                   height: AppSpacing.dragHandleHeight,
                   decoration: BoxDecoration(
-                    color: AppColors.border,
+                    color: theme.colorScheme.outline,
                     borderRadius:
                         BorderRadius.circular(AppSpacing.radiusFull),
                   ),
@@ -97,7 +97,7 @@ class _PaymentDialogContentState extends ConsumerState<_PaymentDialogContent> {
               Container(
                 padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceVariant,
+                  color: theme.colorScheme.surfaceContainerHighest,
                   borderRadius:
                       BorderRadius.circular(AppSpacing.radiusMd),
                 ),
@@ -108,7 +108,7 @@ class _PaymentDialogContentState extends ConsumerState<_PaymentDialogContent> {
                           '${cart.lineCount} item${cart.lineCount == 1 ? '' : 's'}',
                       value: formatCurrency(subtotal, currencySymbol),
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                     const SizedBox(height: AppSpacing.xs),
@@ -116,13 +116,13 @@ class _PaymentDialogContentState extends ConsumerState<_PaymentDialogContent> {
                       label: 'Tax ($taxPercent%)',
                       value: formatCurrency(tax, currencySymbol),
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
-                    const Padding(
+                    Padding(
                       padding:
-                          EdgeInsets.symmetric(vertical: AppSpacing.sm),
-                      child: Divider(height: 1, color: AppColors.border),
+                          const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                      child: Divider(height: 1, color: theme.colorScheme.outline),
                     ),
                     _SummaryRow(
                       label: 'Total',
@@ -190,16 +190,16 @@ class _PaymentDialogContentState extends ConsumerState<_PaymentDialogContent> {
                         height: AppSpacing.loadingIndicatorSize,
                         child: CircularProgressIndicator(
                           strokeWidth: 2.5,
-                          color: AppColors.onPrimary,
+                          color: Colors.white,
                         ),
                       )
                     : Text(
                         _selectedMethod != null
                             ? 'Confirm ${formatCurrency(total, currencySymbol)}'
                             : 'Select a payment method',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        style: theme.textTheme.titleMedium?.copyWith(
                           color: _selectedMethod != null
-                              ? AppColors.onPrimary
+                              ? Colors.white
                               : AppColors.disabled,
                           fontWeight: FontWeight.w700,
                         ),
@@ -215,7 +215,7 @@ class _PaymentDialogContentState extends ConsumerState<_PaymentDialogContent> {
                 child: Text(
                   'Cancel',
                   style: TextStyle(
-                    color: AppColors.textSecondary,
+                    color: theme.colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -282,7 +282,7 @@ class _PaymentDialogContentState extends ConsumerState<_PaymentDialogContent> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Payment failed: $e'),
-            backgroundColor: AppColors.error,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -324,11 +324,11 @@ class _PaymentMethodButton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.primary.withValues(alpha: 0.08)
-              : AppColors.surface,
+              ? theme.colorScheme.primary.withValues(alpha: 0.08)
+              : theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.border,
+            color: isSelected ? theme.colorScheme.primary : theme.colorScheme.outline,
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -338,7 +338,7 @@ class _PaymentMethodButton extends StatelessWidget {
             Icon(
               _icon,
               size: AppSpacing.paymentIconSize,
-              color: isSelected ? AppColors.primary : AppColors.textSecondary,
+              color: isSelected ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
@@ -346,7 +346,7 @@ class _PaymentMethodButton extends StatelessWidget {
               style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 color:
-                    isSelected ? AppColors.primary : AppColors.textPrimary,
+                    isSelected ? theme.colorScheme.primary : theme.colorScheme.onSurface,
               ),
             ),
           ],

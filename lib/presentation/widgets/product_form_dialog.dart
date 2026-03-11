@@ -202,11 +202,11 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
                       ? 'Product is visible in the POS'
                       : 'Product is hidden from the POS',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                 ),
                 value: _isActive,
-                activeTrackColor: AppColors.primary,
+                activeTrackColor: Theme.of(context).colorScheme.primary,
                 contentPadding: EdgeInsets.zero,
                 onChanged: (value) => setState(() => _isActive = value),
               ),
@@ -222,12 +222,12 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
         FilledButton(
           onPressed: _isSaving ? null : _handleSave,
           child: _isSaving
-              ? const SizedBox(
+              ? SizedBox(
                   width: 20,
                   height: 20,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: AppColors.onPrimary,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 )
               : Text(_isEditing ? 'SAVE' : 'ADD'),

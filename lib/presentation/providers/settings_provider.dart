@@ -1,8 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_pos/domain/entities/business_settings.dart';
 import 'package:flutter_pos/application/usecases/payment/process_payment.dart';
 
 import 'repository_providers.dart';
+
+/// Controls the app-wide [ThemeMode] (system / light / dark).
+final themeModeProvider = StateProvider<ThemeMode>((_) => ThemeMode.system);
 
 /// Provides the [ProcessPayment] use case.
 final processPaymentUseCaseProvider = Provider<ProcessPayment>((ref) {

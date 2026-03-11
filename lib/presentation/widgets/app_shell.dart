@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_pos/core/router/app_router.dart';
-import 'package:flutter_pos/core/theme/app_colors.dart';
 import 'package:flutter_pos/core/theme/app_spacing.dart';
 
 /// The destination items shown in the navigation rail / bottom bar.
@@ -120,18 +119,18 @@ class _TabletShell extends StatelessWidget {
               selectedIndex: selectedIndex,
               onDestinationSelected: onSelected,
               labelType: NavigationRailLabelType.all,
-              backgroundColor: AppColors.surface,
-              indicatorColor: AppColors.primary.withValues(alpha: 0.12),
+              backgroundColor: theme.colorScheme.surface,
+              indicatorColor: theme.colorScheme.primary.withValues(alpha: 0.12),
               selectedIconTheme:
-                  const IconThemeData(color: AppColors.primary),
+                  IconThemeData(color: theme.colorScheme.primary),
               selectedLabelTextStyle: theme.textTheme.labelMedium?.copyWith(
-                color: AppColors.primary,
+                color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w600,
               ),
               unselectedIconTheme:
-                  const IconThemeData(color: AppColors.textSecondary),
+                  IconThemeData(color: theme.colorScheme.onSurfaceVariant),
               unselectedLabelTextStyle: theme.textTheme.labelMedium?.copyWith(
-                color: AppColors.textSecondary,
+                color: theme.colorScheme.onSurfaceVariant,
               ),
               destinations: _destinations
                   .map((d) => NavigationRailDestination(
@@ -141,7 +140,7 @@ class _TabletShell extends StatelessWidget {
                       ))
                   .toList(),
             ),
-            const VerticalDivider(width: 1, color: AppColors.divider),
+            VerticalDivider(width: 1, color: theme.dividerColor),
             Expanded(child: child),
           ],
         ),
@@ -167,13 +166,15 @@ class _PhoneShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       body: SafeArea(child: child),
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
         onDestinationSelected: onSelected,
-        backgroundColor: AppColors.surface,
-        indicatorColor: AppColors.primary.withValues(alpha: 0.12),
+        backgroundColor: theme.colorScheme.surface,
+        indicatorColor: theme.colorScheme.primary.withValues(alpha: 0.12),
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         destinations: _destinations
             .map((d) => NavigationDestination(

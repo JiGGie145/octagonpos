@@ -44,6 +44,7 @@ class AppTheme {
         outline: AppColors.border,
         outlineVariant: AppColors.divider,
         surfaceContainerHighest: AppColors.surfaceVariant,
+        onSurfaceVariant: AppColors.textSecondary,
       ),
 
       // ── Scaffold ─────────────────────────────────────────────────
@@ -268,6 +269,9 @@ class AppTheme {
         error: AppColors.error,
         onError: AppColors.onError,
         outline: AppColors.darkSurfaceVariant,
+        onSurfaceVariant: AppColors.disabled,
+        outlineVariant: AppColors.darkSurfaceVariant,
+        surfaceContainerHighest: AppColors.darkSurfaceVariant,
       ),
 
       scaffoldBackgroundColor: AppColors.darkBackground,

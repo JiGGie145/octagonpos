@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_pos/core/theme/app_colors.dart';
 import 'package:flutter_pos/core/theme/app_spacing.dart';
 import 'package:flutter_pos/presentation/providers/cart_provider.dart';
 import 'package:flutter_pos/presentation/widgets/category_filter_chips.dart';
@@ -21,8 +20,10 @@ class OrderScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -47,16 +48,16 @@ class OrderScreen extends ConsumerWidget {
 class _TabletLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       children: [
         // Left panel — product browsing
-        Expanded(
+        const Expanded(
           child: _ProductBrowsingPanel(),
         ),
         // Vertical divider
-        VerticalDivider(width: 1, color: AppColors.divider),
+        VerticalDivider(width: 1, color: Theme.of(context).dividerColor),
         // Right panel — current order
-        SizedBox(
+        const SizedBox(
           width: AppSpacing.orderPanelWidth,
           child: OrderPanel(),
         ),
@@ -72,6 +73,7 @@ class _TabletLayout extends StatelessWidget {
 class _PhoneLayout extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final cart = ref.watch(cartProvider);
 
     return Stack(
@@ -84,19 +86,19 @@ class _PhoneLayout extends ConsumerWidget {
             bottom: AppSpacing.md,
             child: FloatingActionButton.extended(
               onPressed: () => _showOrderBottomSheet(context),
-              backgroundColor: AppColors.primary,
+              backgroundColor: theme.colorScheme.primary,
               icon: Badge(
                 label: Text(
                   '${cart.totalQuantity}',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.onPrimary,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.onPrimary,
                   ),
                 ),
-                child: const Icon(Icons.shopping_cart, color: AppColors.onPrimary),
+                child: Icon(Icons.shopping_cart, color: theme.colorScheme.onPrimary),
               ),
-              label: const Text(
+              label: Text(
                 'View Order',
-                style: TextStyle(color: AppColors.onPrimary),
+                style: TextStyle(color: theme.colorScheme.onPrimary),
               ),
             ),
           ),
@@ -128,7 +130,7 @@ class _PhoneLayout extends ConsumerWidget {
                 width: AppSpacing.dragHandleWidth,
                 height: AppSpacing.dragHandleHeight,
                 decoration: BoxDecoration(
-                  color: AppColors.border,
+                  color: Theme.of(context).colorScheme.outline,
                   borderRadius: BorderRadius.circular(AppSpacing.radiusXs),
                 ),
               ),

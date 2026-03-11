@@ -5,6 +5,7 @@ import 'package:flutter_pos/core/theme/app_theme.dart';
 import 'package:flutter_pos/data/seed/dev_data_seeder.dart';
 import 'package:flutter_pos/data/repositories/drift_product_repository.dart';
 import 'package:flutter_pos/presentation/providers/database_provider.dart';
+import 'package:flutter_pos/presentation/providers/settings_provider.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -43,11 +44,14 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ref.watch(themeModeProvider);
+
     if (!_seeded) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light(),
         darkTheme: AppTheme.dark(),
+        themeMode: themeMode,
         home: const Scaffold(
           body: Center(child: CircularProgressIndicator()),
         ),
@@ -61,6 +65,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
+      themeMode: themeMode,
       routerConfig: router,
     );
   }

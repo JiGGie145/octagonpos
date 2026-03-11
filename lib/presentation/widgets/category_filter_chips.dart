@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_pos/core/theme/app_colors.dart';
 import 'package:flutter_pos/core/theme/app_spacing.dart';
 import 'package:flutter_pos/presentation/providers/product_providers.dart';
 
@@ -72,8 +71,10 @@ class _CategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Material(
-      color: isSelected ? AppColors.primary : Colors.transparent,
+      color: isSelected ? theme.colorScheme.primary : Colors.transparent,
       borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
       child: InkWell(
         onTap: onTap,
@@ -87,15 +88,15 @@ class _CategoryChip extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
             border: isSelected
                 ? null
-                : Border.all(color: AppColors.border, width: 1.5),
+                : Border.all(color: theme.colorScheme.outline, width: 1.5),
           ),
           child: Center(
             child: Text(
               label,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              style: theme.textTheme.labelLarge?.copyWith(
                     color: isSelected
-                        ? AppColors.onPrimary
-                        : AppColors.textSecondary,
+                        ? theme.colorScheme.onPrimary
+                        : theme.colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
                   ),
             ),

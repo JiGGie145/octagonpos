@@ -30,6 +30,30 @@ target 'Runner' do
   use_frameworks!
 
   flutter_install_all_macos_pods File.dirname(File.realpath(__FILE__))
+
+  # Fix broken blue_thermal_printer macOS plugin.
+  # The upstream plugin has a copy-paste error: the Swift class is named
+  # "AssetsAudioPlayer" instead of "SwiftBlueThermalPrinterPlugin", causing
+  # the macOS build to fail. Replace the symlink with a local corrected copy.
+  btp_symlink = File.join(File.dirname(File.realpath(__FILE__)),
+    'Flutter', 'ephemeral', '.symlinks', 'plugins', 'blue_thermal_printer')
+  if File.symlink?(btp_symlink)
+    btp_target = File.readlink(btp_symlink)
+    File.delete(btp_symlink)
+    FileUtils.cp_r(btp_target, btp_symlink)
+    swift_file = File.join(btp_symlink, 'macos', 'Classes', 'SwiftBlueThermalPrinterPlugin.swift')
+    File.write(swift_file, <<~SWIFT)
+      import FlutterMacOS
+
+      public class SwiftBlueThermalPrinterPlugin: NSObject, FlutterPlugin {
+        public static func register(with registrar: FlutterPluginRegistrar) {}
+        public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+          result(FlutterMethodNotImplemented)
+        }
+      }
+    SWIFT
+  end
+
   target 'RunnerTests' do
     inherit! :search_paths
   end

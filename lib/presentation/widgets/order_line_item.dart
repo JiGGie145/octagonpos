@@ -1,3 +1,5 @@
+import 'package:flutter/widget_previews.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_pos/core/theme/app_colors.dart';
 import 'package:flutter_pos/core/theme/app_spacing.dart';
@@ -8,6 +10,8 @@ import 'package:flutter_pos/domain/entities/order_item.dart';
 ///
 /// Shows product name, unit price, a quantity stepper (− / count / +),
 /// the line total, and a delete button.
+
+
 class OrderLineItem extends StatelessWidget {
   const OrderLineItem({
     super.key,
@@ -24,6 +28,7 @@ class OrderLineItem extends StatelessWidget {
   final VoidCallback onDecrement;
   final VoidCallback onRemove;
 
+  
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -135,6 +140,7 @@ class _QuantityStepper extends StatelessWidget {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
                   ),
             ),
           ),

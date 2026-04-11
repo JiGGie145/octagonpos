@@ -55,6 +55,9 @@ final filteredProductListProvider = FutureProvider<List<Product>>((ref) async {
         .toList();
   }
 
+  // Filter by active status
+  filtered = filtered.where((p) => p.isActive).toList();
+
   // Filter by search query
   if (query.isNotEmpty) {
     filtered = filtered

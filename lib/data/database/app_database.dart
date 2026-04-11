@@ -120,6 +120,30 @@ class AppDatabase extends _$AppDatabase {
         .get();
   }
 
+  /// Returns non-deleted orders created within [from] (inclusive) to [to] (exclusive).
+  Future<List<Order>> getOrdersByDateRange(DateTime from, DateTime to) {
+    return (select(orders)
+          ..where((o) =>
+              o.deletedAt.isNull() &
+              o.createdAt.isBiggerOrEqualValue(from) &
+              o.createdAt.isSmallerThanValue(to))
+          ..orderBy([(o) => OrderingTerm.desc(o.createdAt)]))
+        .get();
+  }
+
+  /// Returns non-deleted orders matching [status] within [from] to [to].
+  Future<List<Order>> getOrdersByStatusAndDateRange(
+      String status, DateTime from, DateTime to) {
+    return (select(orders)
+          ..where((o) =>
+              o.status.equals(status) &
+              o.deletedAt.isNull() &
+              o.createdAt.isBiggerOrEqualValue(from) &
+              o.createdAt.isSmallerThanValue(to))
+          ..orderBy([(o) => OrderingTerm.desc(o.createdAt)]))
+        .get();
+  }
+
   /// Inserts a new order and returns the auto-generated order number.
   Future<int> insertOrder(OrdersCompanion order) {
     return into(orders).insert(order);

@@ -38,13 +38,60 @@ final orderListProvider = FutureProvider<List<Order>>((ref) async {
 /// Optional status filter for the order list.
 final selectedOrderStatusProvider = StateProvider<OrderStatus?>((ref) => null);
 
-/// Filtered order list based on selected status.
+/// Represents the date range filter for the order list.
+enum DateFilter {
+  today('Today'),
+  yesterday('Yesterday'),
+  last7Days('Last 7 Days'),
+  last30Days('Last 30 Days'),
+  allTime('All Time');
+
+  final String label;
+  const DateFilter(this.label);
+
+  /// Returns the [from, to) date range for this filter, or `null` for all time.
+  ({DateTime from, DateTime to})? get dateRange {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    return switch (this) {
+      DateFilter.today => (from: today, to: today.add(const Duration(days: 1))),
+      DateFilter.yesterday => (
+          from: today.subtract(const Duration(days: 1)),
+          to: today,
+        ),
+      DateFilter.last7Days => (
+          from: today.subtract(const Duration(days: 6)),
+          to: today.add(const Duration(days: 1)),
+        ),
+      DateFilter.last30Days => (
+          from: today.subtract(const Duration(days: 29)),
+          to: today.add(const Duration(days: 1)),
+        ),
+      DateFilter.allTime => null,
+    };
+  }
+}
+
+/// Selected date filter — defaults to today.
+final selectedDateFilterProvider =
+    StateProvider<DateFilter>((ref) => DateFilter.today);
+
+/// Filtered order list based on selected status and date filter.
 final filteredOrderListProvider = FutureProvider<List<Order>>((ref) async {
   final status = ref.watch(selectedOrderStatusProvider);
+  final dateFilter = ref.watch(selectedDateFilterProvider);
   final getOrders = ref.watch(getOrdersUseCaseProvider);
 
+  final range = dateFilter.dateRange;
+
+  if (status != null && range != null) {
+    return getOrders.byStatusAndDateRange(status, range.from, range.to);
+  }
   if (status != null) {
     return getOrders.byStatus(status);
+  }
+  if (range != null) {
+    return getOrders.byDateRange(range.from, range.to);
   }
   return getOrders();
 });

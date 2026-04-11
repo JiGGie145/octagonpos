@@ -38,6 +38,30 @@ class MockOrderRepository implements OrderRepository {
   }
 
   @override
+  Future<List<Order>> getByDateRange(DateTime from, DateTime to) async {
+    callLog.add('getByDateRange');
+    return _orders
+        .where((o) =>
+            !o.isDeleted &&
+            !o.createdAt.isBefore(from) &&
+            o.createdAt.isBefore(to))
+        .toList();
+  }
+
+  @override
+  Future<List<Order>> getByStatusAndDateRange(
+      OrderStatus status, DateTime from, DateTime to) async {
+    callLog.add('getByStatusAndDateRange');
+    return _orders
+        .where((o) =>
+            o.status == status &&
+            !o.isDeleted &&
+            !o.createdAt.isBefore(from) &&
+            o.createdAt.isBefore(to))
+        .toList();
+  }
+
+  @override
   Future<Order> update(Order order) async {
     callLog.add('update');
     final index = _orders.indexWhere((o) => o.localId == order.localId);
@@ -61,5 +85,11 @@ class MockOrderRepository implements OrderRepository {
     if (index >= 0) {
       _orders[index] = _orders[index].copyWith(deletedAt: DateTime.now());
     }
+  }
+
+  @override
+  Future<int> getNextOrderNumber() async {
+    callLog.add('getNextOrderNumber');
+    return _orders.length + 1;
   }
 }

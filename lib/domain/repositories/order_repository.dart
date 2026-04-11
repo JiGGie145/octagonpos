@@ -15,6 +15,13 @@ abstract class OrderRepository {
   /// Returns all non-deleted orders matching the given [status].
   Future<List<Order>> getByStatus(OrderStatus status);
 
+  /// Returns non-deleted orders created within [from] (inclusive) to [to] (exclusive).
+  Future<List<Order>> getByDateRange(DateTime from, DateTime to);
+
+  /// Returns non-deleted orders matching [status] created within [from] to [to].
+  Future<List<Order>> getByStatusAndDateRange(
+      OrderStatus status, DateTime from, DateTime to);
+
   /// Persists a new order with its items. Returns the created order.
   Future<Order> create(Order order);
 

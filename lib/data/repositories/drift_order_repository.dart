@@ -44,6 +44,33 @@ class DriftOrderRepository implements OrderRepository {
   }
 
   @override
+  Future<List<domain.Order>> getByDateRange(
+      DateTime from, DateTime to) async {
+    final rows = await _db.getOrdersByDateRange(from, to);
+    final results = <domain.Order>[];
+    for (final row in rows) {
+      final itemRows = await _db.getOrderItems(row.localId);
+      final items = itemRows.map(OrderMapper.itemToDomain).toList();
+      results.add(OrderMapper.toDomain(row, items));
+    }
+    return results;
+  }
+
+  @override
+  Future<List<domain.Order>> getByStatusAndDateRange(
+      OrderStatus status, DateTime from, DateTime to) async {
+    final rows =
+        await _db.getOrdersByStatusAndDateRange(status.name, from, to);
+    final results = <domain.Order>[];
+    for (final row in rows) {
+      final itemRows = await _db.getOrderItems(row.localId);
+      final items = itemRows.map(OrderMapper.itemToDomain).toList();
+      results.add(OrderMapper.toDomain(row, items));
+    }
+    return results;
+  }
+
+  @override
   Future<domain.Order> create(domain.Order order) async {
     final companion = OrderMapper.toInsertCompanion(order);
     final orderNumber = await _db.insertOrder(companion);

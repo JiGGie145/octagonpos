@@ -67,9 +67,9 @@ Implement inventory tracking (optional, non-blocking), cost/profit engine, dashb
 - **New file:** `lib/presentation/providers/inventory_providers.dart` — use case and state providers for inventory features
 
 **Verification Phase 1:**
-- [ ] Migration test: v1 → v2 upgrades without data loss (existing products/orders preserved)
-- [ ] Unit tests for new entities (recipe_item, restock_entry, stock_adjustment)
-- [ ] Unit tests for updated Product entity (new fields, copyWith, defaults)
+- [x] Migration test: v1 → v2 upgrades without data loss (existing products/orders preserved)
+- [x] Unit tests for new entities (recipe_item, restock_entry, stock_adjustment)
+- [x] Unit tests for updated Product entity (new fields, copyWith, defaults)
 - [x] App builds and existing functionality unchanged
 - [ ] `flutter test` passes
 

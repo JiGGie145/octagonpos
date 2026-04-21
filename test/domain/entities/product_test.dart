@@ -10,6 +10,12 @@ void main() {
     bool isActive = true,
     DateTime? deletedAt,
     String? imageUrl,
+    bool trackStock = false,
+    bool usesIngredients = false,
+    double? stockQty,
+    double? lowStockThreshold,
+    int? costPrice,
+    bool isSellable = true,
   }) {
     return Product(
       localId: 'prod-1',
@@ -21,6 +27,12 @@ void main() {
       createdAt: now,
       updatedAt: now,
       deletedAt: deletedAt,
+      trackStock: trackStock,
+      usesIngredients: usesIngredients,
+      stockQty: stockQty,
+      lowStockThreshold: lowStockThreshold,
+      costPrice: costPrice,
+      isSellable: isSellable,
     );
   }
 
@@ -74,6 +86,41 @@ void main() {
       expect(p.isActive, true);
       expect(p.syncStatus, SyncStatus.pending);
       expect(p.imageUrl, isNull);
+      expect(p.trackStock, false);
+      expect(p.usesIngredients, false);
+      expect(p.stockQty, isNull);
+      expect(p.lowStockThreshold, isNull);
+      expect(p.costPrice, isNull);
+      expect(p.isSellable, true);
+    });
+
+    test('costPriceInMajorUnits returns converted value when set', () {
+      final p = makeProduct(costPrice: 1250);
+      expect(p.costPriceInMajorUnits, 12.5);
+    });
+
+    test('costPriceInMajorUnits returns null when costPrice is null', () {
+      final p = makeProduct(costPrice: null);
+      expect(p.costPriceInMajorUnits, isNull);
+    });
+
+    test('copyWith overrides inventory-specific fields', () {
+      final p = makeProduct();
+      final copy = p.copyWith(
+        trackStock: true,
+        usesIngredients: true,
+        stockQty: 3.5,
+        lowStockThreshold: 1.0,
+        costPrice: 1500,
+        isSellable: false,
+      );
+
+      expect(copy.trackStock, true);
+      expect(copy.usesIngredients, true);
+      expect(copy.stockQty, 3.5);
+      expect(copy.lowStockThreshold, 1.0);
+      expect(copy.costPrice, 1500);
+      expect(copy.isSellable, false);
     });
   });
 }

@@ -16,7 +16,7 @@ Implement inventory tracking (optional, non-blocking), cost/profit engine, dashb
 ## Phase 1: Data Foundation — Schema Migration & Domain Updates
 *All subsequent phases depend on this.*
 
-### Step 1.1: Database Migration (v1 → v2)
+### [x] Step 1.1: Database Migration (v1 → v2)
 - **File:** `lib/data/database/app_database.dart` — bump `schemaVersion` to 2, add `onUpgrade` migration
 - **New columns on `products` table:**
   - `track_stock` (BOOLEAN, default false)
@@ -31,7 +31,7 @@ Implement inventory tracking (optional, non-blocking), cost/profit engine, dashb
 - **File:** `lib/data/database/tables/products_table.dart` — add new column definitions
 - **File:** `lib/data/database/tables/order_items_table.dart` — add new column definitions
 
-### Step 1.2: New Tables
+### [x] Step 1.2: New Tables
 - **New file:** `lib/data/database/tables/recipe_items_table.dart`
   - Columns: localId, productId (FK→products), ingredientProductId (FK→products), quantityRequired (REAL), createdAt, updatedAt
 - **New file:** `lib/data/database/tables/restock_entries_table.dart`
@@ -40,29 +40,29 @@ Implement inventory tracking (optional, non-blocking), cost/profit engine, dashb
   - Columns: localId, productId (FK→products), quantityChange (REAL), reason (TEXT nullable), date (DATETIME), createdAt, updatedAt
 - Register all new tables in `AppDatabase` `@DriftDatabase(tables: [...])` annotation
 
-### Step 1.3: Domain Entity Updates
+### [x] Step 1.3: Domain Entity Updates
 - **File:** `lib/domain/entities/product.dart` — add fields: `trackStock`, `usesIngredients`, `stockQty`, `lowStockThreshold`, `costPrice`, `isSellable`; update `copyWith()`
 - **File:** `lib/domain/entities/order_item.dart` — add fields: `costSnapshotTotal`, `revenueSnapshotTotal`; update `copyWith()`
 - **New file:** `lib/domain/entities/recipe_item.dart` — entity with: localId, productId, ingredientProductId, quantityRequired
 - **New file:** `lib/domain/entities/restock_entry.dart` — entity with: localId, productId, quantityAdded, unitCost, totalCost, date, notes
 - **New file:** `lib/domain/entities/stock_adjustment.dart` — entity with: localId, productId, quantityChange, reason, date
 
-### Step 1.4: Repository Interfaces
+### [ ] Step 1.4: Repository Interfaces
 - **File:** `lib/domain/repositories/product_repository.dart` — add: `getSellableProducts()`, `getIngredients()`, `getAllIncludingIngredients()`, `updateStock(localId, newQty)`
 - **New file:** `lib/domain/repositories/recipe_repository.dart` — interface: `getByProductId()`, `create()`, `update()`, `deleteByProductId()`, `getIngredientsForProduct()`
 - **New file:** `lib/domain/repositories/restock_repository.dart` — interface: `create()`, `getByProductId()`, `delete()`, `getByDateRange()`
 - **New file:** `lib/domain/repositories/stock_adjustment_repository.dart` — interface: `create()`, `getByProductId()`, `getByDateRange()`
 
-### Step 1.5: Mappers & Data Layer Implementations
+### [x] Step 1.5: Mappers & Data Layer Implementations
 - **File:** `lib/data/mappers/product_mapper.dart` — map new fields
 - **File:** `lib/data/mappers/order_mapper.dart` — map cost/revenue snapshot fields
 - **New files:** `lib/data/mappers/recipe_item_mapper.dart`, `restock_entry_mapper.dart`, `stock_adjustment_mapper.dart`
 - **New files:** `lib/data/repositories/drift_recipe_repository.dart`, `drift_restock_repository.dart`, `drift_stock_adjustment_repository.dart`
 - **File:** `lib/data/repositories/drift_product_repository.dart` — implement new methods
 
-### Step 1.6: Run `build_runner` to regenerate Drift code
+### [x] Step 1.6: Run `build_runner` to regenerate Drift code
 
-### Step 1.7: Provider Registration
+### [ ] Step 1.7: Provider Registration
 - **File:** `lib/presentation/providers/repository_providers.dart` — add providers for new repositories
 - **New file:** `lib/presentation/providers/inventory_providers.dart` — use case and state providers for inventory features
 
@@ -70,7 +70,7 @@ Implement inventory tracking (optional, non-blocking), cost/profit engine, dashb
 - [ ] Migration test: v1 → v2 upgrades without data loss (existing products/orders preserved)
 - [ ] Unit tests for new entities (recipe_item, restock_entry, stock_adjustment)
 - [ ] Unit tests for updated Product entity (new fields, copyWith, defaults)
-- [ ] App builds and existing functionality unchanged
+- [x] App builds and existing functionality unchanged
 - [ ] `flutter test` passes
 
 ---

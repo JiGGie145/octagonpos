@@ -14,6 +14,12 @@ class OrderItems extends Table {
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
 
+  // ── Cost snapshot fields (Phase 1) ─────────────────────────────────
+  /// Snapshotted COGS in cents at order completion time. Null if cost unknown.
+  IntColumn get costSnapshotTotal => integer().nullable()();
+  /// Snapshotted revenue in cents at order completion time.
+  IntColumn get revenueSnapshotTotal => integer().nullable()();
+
   @override
   Set<Column> get primaryKey => {localId};
 }

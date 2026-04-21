@@ -20,6 +20,12 @@ class ProductMapper {
       updatedAt: row.updatedAt,
       deletedAt: row.deletedAt,
       syncStatus: SyncStatus.fromString(row.syncStatus),
+      trackStock: row.trackStock,
+      usesIngredients: row.usesIngredients,
+      stockQty: row.stockQty,
+      lowStockThreshold: row.lowStockThreshold,
+      costPrice: row.costPrice,
+      isSellable: row.isSellable,
     );
   }
 
@@ -36,6 +42,12 @@ class ProductMapper {
       updatedAt: Value(entity.updatedAt),
       deletedAt: Value(entity.deletedAt),
       syncStatus: Value(entity.syncStatus.name),
+      trackStock: Value(entity.trackStock),
+      usesIngredients: Value(entity.usesIngredients),
+      stockQty: Value(entity.stockQty),
+      lowStockThreshold: Value(entity.lowStockThreshold),
+      costPrice: Value(entity.costPrice),
+      isSellable: Value(entity.isSellable),
     );
   }
 }

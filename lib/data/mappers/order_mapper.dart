@@ -61,6 +61,8 @@ class OrderMapper {
       productName: row.productName,
       quantity: row.quantity,
       unitPrice: row.unitPrice,
+      costSnapshotTotal: row.costSnapshotTotal,
+      revenueSnapshotTotal: row.revenueSnapshotTotal,
     );
   }
 
@@ -73,6 +75,8 @@ class OrderMapper {
       productName: Value(entity.productName),
       quantity: Value(entity.quantity),
       unitPrice: Value(entity.unitPrice),
+      costSnapshotTotal: Value(entity.costSnapshotTotal),
+      revenueSnapshotTotal: Value(entity.revenueSnapshotTotal),
       createdAt: Value(DateTime.now()),
       updatedAt: Value(DateTime.now()),
     );

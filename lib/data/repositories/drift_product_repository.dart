@@ -47,4 +47,29 @@ class DriftProductRepository implements ProductRepository {
   Future<void> softDelete(String localId) async {
     await _db.softDeleteProduct(localId);
   }
+
+  // ── Inventory-specific ────────────────────────────────────────────
+
+  @override
+  Future<List<domain.Product>> getSellableProducts() async {
+    final rows = await _db.getSellableProducts();
+    return rows.map(ProductMapper.toDomain).toList();
+  }
+
+  @override
+  Future<List<domain.Product>> getIngredients() async {
+    final rows = await _db.getIngredientProducts();
+    return rows.map(ProductMapper.toDomain).toList();
+  }
+
+  @override
+  Future<List<domain.Product>> getAllIncludingIngredients() async {
+    final rows = await _db.getAllProducts();
+    return rows.map(ProductMapper.toDomain).toList();
+  }
+
+  @override
+  Future<void> updateStock(String localId, double newQty) async {
+    await _db.updateProductStock(localId, newQty);
+  }
 }

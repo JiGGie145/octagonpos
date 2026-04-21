@@ -10,6 +10,13 @@ class OrderItem {
   final int quantity;
   final int unitPrice; // in cents
 
+  // ── Cost snapshot fields (recorded at order completion) ───────────
+  /// COGS in cents, snapshotted at order completion. Null if cost was unknown.
+  final int? costSnapshotTotal;
+
+  /// Revenue in cents, snapshotted at order completion. Null before completion.
+  final int? revenueSnapshotTotal;
+
   const OrderItem({
     required this.localId,
     required this.orderId,
@@ -17,6 +24,8 @@ class OrderItem {
     required this.productName,
     required this.quantity,
     required this.unitPrice,
+    this.costSnapshotTotal,
+    this.revenueSnapshotTotal,
   });
 
   /// Total price for this line item in cents.
@@ -30,6 +39,8 @@ class OrderItem {
     String? productName,
     int? quantity,
     int? unitPrice,
+    int? costSnapshotTotal,
+    int? revenueSnapshotTotal,
   }) {
     return OrderItem(
       localId: localId ?? this.localId,
@@ -38,6 +49,8 @@ class OrderItem {
       productName: productName ?? this.productName,
       quantity: quantity ?? this.quantity,
       unitPrice: unitPrice ?? this.unitPrice,
+      costSnapshotTotal: costSnapshotTotal ?? this.costSnapshotTotal,
+      revenueSnapshotTotal: revenueSnapshotTotal ?? this.revenueSnapshotTotal,
     );
   }
 

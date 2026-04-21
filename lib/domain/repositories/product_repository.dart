@@ -23,4 +23,19 @@ abstract class ProductRepository {
 
   /// Soft-deletes a product by setting its [deletedAt] timestamp.
   Future<void> softDelete(String localId);
+
+  // ── Inventory-specific queries ────────────────────────────────────
+
+  /// Returns all active products that are marked for sale (isSellable = true).
+  Future<List<Product>> getSellableProducts();
+
+  /// Returns all active products that are used as ingredients
+  /// (usesIngredients = false, i.e. raw ingredients themselves).
+  Future<List<Product>> getIngredients();
+
+  /// Returns all active products including those flagged as ingredients only.
+  Future<List<Product>> getAllIncludingIngredients();
+
+  /// Updates the [stockQty] for a given product identified by [localId].
+  Future<void> updateStock(String localId, double newQty);
 }

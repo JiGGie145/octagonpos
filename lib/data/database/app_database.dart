@@ -302,6 +302,11 @@ class AppDatabase extends _$AppDatabase {
     return into(recipeItems).insert(item);
   }
 
+  /// Inserts or updates a recipe item by primary key.
+  Future<int> upsertRecipeItem(RecipeItemsCompanion item) {
+    return into(recipeItems).insertOnConflictUpdate(item);
+  }
+
   /// Deletes all recipe items for a product (used when replacing a recipe).
   Future<int> deleteRecipeItemsByProductId(String productId) {
     return (delete(recipeItems)

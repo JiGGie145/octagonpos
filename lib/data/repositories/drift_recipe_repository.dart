@@ -2,6 +2,7 @@ import 'package:flutter_pos/data/database/app_database.dart';
 import 'package:flutter_pos/data/mappers/recipe_item_mapper.dart';
 import 'package:flutter_pos/domain/entities/recipe_item.dart' as domain;
 import 'package:flutter_pos/domain/repositories/recipe_repository.dart';
+import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 
 /// Drift-backed implementation of [RecipeRepository].
@@ -14,6 +15,35 @@ class DriftRecipeRepository implements RecipeRepository {
   Future<List<domain.RecipeItem>> getByProductId(String productId) async {
     final rows = await _db.getRecipeItemsByProductId(productId);
     return rows.map(RecipeItemMapper.toDomain).toList();
+  }
+
+  @override
+  Future<List<domain.RecipeItem>> getIngredientsForProduct(
+    String productId,
+  ) async {
+    return getByProductId(productId);
+  }
+
+  @override
+  Future<domain.RecipeItem> create(domain.RecipeItem item) async {
+    final withId =
+        item.localId.isEmpty ? item.copyWith(localId: const Uuid().v4()) : item;
+    await _db.insertRecipeItem(RecipeItemMapper.toCompanion(withId));
+    return withId;
+  }
+
+  @override
+  Future<domain.RecipeItem> update(domain.RecipeItem item) async {
+    await _db.upsertRecipeItem(
+      RecipeItemsCompanion(
+        localId: Value(item.localId),
+        productId: Value(item.productId),
+        ingredientProductId: Value(item.ingredientProductId),
+        quantityRequired: Value(item.quantityRequired),
+        updatedAt: Value(DateTime.now()),
+      ),
+    );
+    return item;
   }
 
   @override

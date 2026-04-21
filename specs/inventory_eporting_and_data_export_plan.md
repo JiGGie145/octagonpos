@@ -47,7 +47,7 @@ Implement inventory tracking (optional, non-blocking), cost/profit engine, dashb
 - **New file:** `lib/domain/entities/restock_entry.dart` — entity with: localId, productId, quantityAdded, unitCost, totalCost, date, notes
 - **New file:** `lib/domain/entities/stock_adjustment.dart` — entity with: localId, productId, quantityChange, reason, date
 
-### [ ] Step 1.4: Repository Interfaces
+### [x] Step 1.4: Repository Interfaces
 - **File:** `lib/domain/repositories/product_repository.dart` — add: `getSellableProducts()`, `getIngredients()`, `getAllIncludingIngredients()`, `updateStock(localId, newQty)`
 - **New file:** `lib/domain/repositories/recipe_repository.dart` — interface: `getByProductId()`, `create()`, `update()`, `deleteByProductId()`, `getIngredientsForProduct()`
 - **New file:** `lib/domain/repositories/restock_repository.dart` — interface: `create()`, `getByProductId()`, `delete()`, `getByDateRange()`
@@ -62,7 +62,7 @@ Implement inventory tracking (optional, non-blocking), cost/profit engine, dashb
 
 ### [x] Step 1.6: Run `build_runner` to regenerate Drift code
 
-### [ ] Step 1.7: Provider Registration
+### [x] Step 1.7: Provider Registration
 - **File:** `lib/presentation/providers/repository_providers.dart` — add providers for new repositories
 - **New file:** `lib/presentation/providers/inventory_providers.dart` — use case and state providers for inventory features
 

@@ -71,7 +71,7 @@ Implement inventory tracking (optional, non-blocking), cost/profit engine, dashb
 - [x] Unit tests for new entities (recipe_item, restock_entry, stock_adjustment)
 - [x] Unit tests for updated Product entity (new fields, copyWith, defaults)
 - [x] App builds and existing functionality unchanged
-- [ ] `flutter test` passes
+- [x] `flutter test` passes
 
 ---
 
